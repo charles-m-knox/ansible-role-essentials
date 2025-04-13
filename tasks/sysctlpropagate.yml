@@ -14,3 +14,4 @@
   become: true
   tags:
     - sysctl
+    - essentials

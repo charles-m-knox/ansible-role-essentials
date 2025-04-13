@@ -57,6 +57,9 @@ note that root access is required for some of the steps:
 
 ```bash
 ansible-playbook site.yml --tags base,sysctl --step
+
+# you can also just use the essentials tag:
+ansible-playbook site.yml --tags essentials --step
 ```
 
 ## License

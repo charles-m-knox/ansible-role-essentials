@@ -12,3 +12,4 @@
     - ansible_service_mgr == 'systemd'
   tags:
     - base
+    - essentials
