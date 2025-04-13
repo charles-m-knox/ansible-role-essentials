@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MIT-0
+---
+# Contains anything that is required and should be created by default in all
+# situations, without impacting the system in any substantial way if executed
+
+- name: Create systemd user config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/systemd/user"
+    state: directory
+    mode: "0755"
+  when:
+    - ansible_service_mgr == 'systemd'
+  tags:
+    - base

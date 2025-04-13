@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT-0
+---
+# example values in the sysctl or sysctl_extra list:
+#   - name: 12-unprivileged-port.conf
+#     content: |
+#       net.ipv4.ip_unprivileged_port_start=80
+#   - name: 13-ipv4-forward
+#     content: |
+#       net.ipv4.ip_forward=1
+sysctl: []
+# extra system controls that can be set on a per-host basis
+sysctl_extra: []

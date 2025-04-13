@@ -1,0 +1,16 @@
+---
+- name: Propagate sysctl settings  # noqa no-changed-when
+  ansible.builtin.shell:
+    cmd: |
+      if [ -f /etc/sysctl.conf ]; then
+        sysctl -p /etc/sysctl.conf
+      fi
+      if [ -d /etc/sysctl.d ] && ls /etc/sysctl.d/* ; then
+        sysctl -p /etc/sysctl.d/*.conf
+      fi
+    executable: /bin/bash
+  when:
+    - sysctl is defined
+  become: true
+  tags:
+    - sysctl

@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT-0
+---
+
+- name: Base
+  ansible.builtin.import_tasks:
+    file: base.yml
+
+- name: System controls
+  ansible.builtin.import_tasks:
+    file: sysctl.yml
