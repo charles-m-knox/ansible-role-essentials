@@ -12,6 +12,7 @@
   become: "{{ item.become | default(false) }}"
   when:
     - files is defined
+    - files | length > 0
     - item.content is defined
   tags:
     - files

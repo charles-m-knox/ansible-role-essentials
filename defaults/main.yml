@@ -10,3 +10,6 @@
 sysctl: []
 # extra system controls that can be set on a per-host basis
 sysctl_extra: []
+
+files: []
+directories: []

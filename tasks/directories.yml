@@ -12,5 +12,6 @@
   loop: "{{ directories }}"
   when:
     - directories is defined
+    - directories | length > 0
   tags:
     - directories

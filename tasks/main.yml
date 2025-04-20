@@ -11,7 +11,7 @@
 
 - name: Directories
   ansible.builtin.import_tasks:
-    file: files.yml
+    file: directories.yml
 
 - name: Files
   ansible.builtin.import_tasks:
