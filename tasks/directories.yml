@@ -1,0 +1,16 @@
+---
+
+# see files.yml for similarly grouped items
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item.dir }}"
+    state: "{{ item.state | default('directory') }}"
+    mode: "{{ item.mode | default(omit) }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+  become: "{{ item.become | default(false) }}"
+  loop: "{{ directories }}"
+  when:
+    - directories is defined
+  tags:
+    - directories

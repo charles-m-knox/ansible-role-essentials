@@ -8,3 +8,11 @@
 - name: System controls
   ansible.builtin.import_tasks:
     file: sysctl.yml
+
+- name: Directories
+  ansible.builtin.import_tasks:
+    file: files.yml
+
+- name: Files
+  ansible.builtin.import_tasks:
+    file: files.yml

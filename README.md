@@ -2,6 +2,7 @@
 
 Ansible role that configures essential system components, such as:
 
+- creating custom files and directories (e.g. drop-in `foo.conf.d` files)
 - systemd user-scoped services prep
 - system controls (`sysctl`)
 
@@ -13,6 +14,36 @@ There are no requirements for this, it should work out of the box with Ansible.
 
 Please see `defaults/main.yml` for variables that can all be set on a per-host
 basis.
+
+### Files and Directories
+
+Here's an example of how to use the `files` and `directories` tasks. These are
+very simple and allow Ansible to control drop-in files and pretty much anything
+else.
+
+Define these variables in your host(s):
+
+```yaml
+directories:
+  - dir: /etc/systemd/system/sshd.service.d
+    become: true
+    owner: root
+    group: root
+    mode: "0644"
+
+files:
+  - dest: /etc/systemd/system/sshd.service.d/override.conf
+    become: true
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Unit]
+      Wants=network-online.target
+      After=network-online.target
+```
+
+You can also leave them undefined or as an empty array.
 
 ## Dependencies
 
@@ -56,10 +87,7 @@ note that root access is required for some of the steps:
 ```
 
 ```bash
-ansible-playbook site.yml --tags base,sysctl --step
-
-# you can also just use the essentials tag:
-ansible-playbook site.yml --tags essentials --step
+ansible-playbook site.yml --tags base,sysctl,files,directories --step
 ```
 
 ## License

@@ -1,0 +1,17 @@
+---
+
+# see directories.yml for similarly grouped items
+- name: Render file from variable
+  ansible.builtin.template:
+    src: "{{ item.src | default('files/file.j2') }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode | default(omit) }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+  loop: "{{ files }}"
+  become: "{{ item.become | default(false) }}"
+  when:
+    - files is defined
+    - item.content is defined
+  tags:
+    - files
