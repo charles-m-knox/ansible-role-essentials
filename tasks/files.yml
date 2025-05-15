@@ -10,6 +10,7 @@
     group: "{{ item.group | default(omit) }}"
   loop: "{{ files }}"
   become: "{{ item.become | default(false) }}"
+  no_log: "{{ item.no_log | default(omit) }}"
   when:
     - files is defined
     - files | length > 0

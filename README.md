@@ -30,6 +30,7 @@ directories:
     owner: root
     group: root
     mode: "0644"
+    # no_log: true  # for sensitive directories, you can hide log output
 
 files:
   - dest: /etc/systemd/system/sshd.service.d/override.conf
@@ -37,6 +38,7 @@ files:
     owner: root
     group: root
     mode: "0644"
+    # no_log: true  # for sensitive files, you can hide log output
     content: |
       [Unit]
       Wants=network-online.target

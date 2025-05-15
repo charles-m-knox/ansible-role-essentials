@@ -10,6 +10,7 @@
     group: "{{ item.group | default(omit) }}"
   become: "{{ item.become | default(false) }}"
   loop: "{{ directories }}"
+  no_log: "{{ item.no_log | default(omit) }}"
   when:
     - directories is defined
     - directories | length > 0
