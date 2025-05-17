@@ -8,6 +8,7 @@
     mode: "{{ item.mode | default(omit) }}"
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
+    recurse: "{{ item.recurse | default(omit) }}"
   become: "{{ item.become | default(false) }}"
   loop: "{{ directories }}"
   no_log: "{{ item.no_log | default(omit) }}"
