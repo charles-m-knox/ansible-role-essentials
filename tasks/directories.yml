@@ -30,8 +30,9 @@
   when:
     - directories is defined
     - directories | length > 0
-    - item.run_command_after is defined
-    - item.run_command_after.shell
+    - item
+    - "'run_command_after' in item"
+    - "'shell' in item.run_command_after"
   tags:
     - directories
     - directories-run-after-commands

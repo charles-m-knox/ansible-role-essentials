@@ -28,10 +28,11 @@
   loop: "{{ files }}"
   no_log: "{{ item.no_log | default(omit) }}"
   when:
-    - files is defined
+    - files
     - files | length > 0
-    - item.run_command_after is defined
-    - item.run_command_after.shell
+    - item
+    - "'run_command_after' in item"
+    - "'shell' in item.run_command_after"
   tags:
     - files
     - files-run-after-commands
