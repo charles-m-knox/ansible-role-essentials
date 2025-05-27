@@ -2,17 +2,16 @@
 ---
 
 - name: Base
-  ansible.builtin.import_tasks:
-    file: base.yml
+  ansible.builtin.import_tasks: base.yml
 
 - name: System controls
-  ansible.builtin.import_tasks:
-    file: sysctl.yml
+  ansible.builtin.import_tasks: sysctl.yml
 
 - name: Directories
-  ansible.builtin.import_tasks:
-    file: directories.yml
+  ansible.builtin.import_tasks: directories.yml
 
 - name: Files
-  ansible.builtin.import_tasks:
-    file: files.yml
+  ansible.builtin.import_tasks: files.yml
+
+- name: Systemd services
+  ansible.builtin.import_tasks: systemd-services.yml

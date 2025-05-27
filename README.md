@@ -17,9 +17,9 @@ basis.
 
 ### Files and Directories
 
-Here's an example of how to use the `files` and `directories` tasks. These are
-very simple and allow Ansible to control drop-in files and pretty much anything
-else.
+Here's an example of how to use the `files`, `directories`, and
+`systemd-services` tasks. These are very simple and allow Ansible to control
+drop-in files and pretty much anything else.
 
 Define these variables in your host(s):
 
@@ -43,6 +43,13 @@ files:
       [Unit]
       Wants=network-online.target
       After=network-online.target
+
+systemd_services:
+  - name: scheduled-backups.timer
+    scope: user
+    state: started
+    enabled: true
+    daemon_reload: true
 ```
 
 You can also leave them undefined or as an empty array.
@@ -89,7 +96,7 @@ note that root access is required for some of the steps:
 ```
 
 ```bash
-ansible-playbook site.yml --tags base,sysctl,files,directories --step
+ansible-playbook site.yml --tags base,sysctl,files,directories,systemd-services --step
 ```
 
 ## License

@@ -1,4 +1,6 @@
+# SPDX-License-Identifier: MIT-0
 ---
+
 - name: Propagate sysctl settings  # noqa no-changed-when
   ansible.builtin.shell:
     cmd: |

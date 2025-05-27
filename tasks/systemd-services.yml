@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: MIT-0
+---
+
+- name: Set systemd services
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    enabled: "{{ item.enabled | default(omit) }}"
+    force: "{{ item.force | default(omit) }}"
+    masked: "{{ item.masked | default(omit) }}"
+    daemon_reload: "{{ item.daemon_reload | default(omit) }}"
+    daemon_reexec: "{{ item.daemon_reexec | default(omit) }}"
+    scope: "{{ item.scope | default(omit) }}"
+    no_block: "{{ item.no_block | default(omit) }}"
+  become: "{{ item.become | default(omit) }}"
+  no_log: "{{ item.no_log | default(omit) }}"
+  loop: "{{ systemd_services }}"
+  when:
+    - systemd_services
+    - systemd_services | length > 0
+  tags:
+    - systemd_services
+    - systemd-services
