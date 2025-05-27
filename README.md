@@ -31,6 +31,13 @@ directories:
     group: root
     mode: "0644"
     # no_log: true  # for sensitive directories, you can hide log output
+    # If desired, you can execute an arbitrary command that will execute after
+    # all directories finish getting created. Can optionally specify executable,
+    # chdir, and become for this as well - these get passed directly to
+    # ansible.builtin.shell.
+    # run_command_after:
+    #   shell: |
+    #     podman unshare chown -R nobody:nobody /path/to/directory
 
 files:
   - dest: /etc/systemd/system/sshd.service.d/override.conf

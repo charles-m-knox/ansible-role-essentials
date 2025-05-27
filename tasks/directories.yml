@@ -18,3 +18,20 @@
     - directories | length > 0
   tags:
     - directories
+
+- name: Run commmand after directory was created  # noqa no-changed-when
+  ansible.builtin.shell:
+    cmd: "{{ item.run_command_after.shell }}"
+    executable: "{{ item.run_command_after.executable | default(omit) }}"
+    chdir: "{{ item.run_command_after.chdir | default(omit) }}"
+  become: "{{ item.run_command_after.become | default(false) }}"
+  loop: "{{ directories }}"
+  no_log: "{{ item.no_log | default(omit) }}"
+  when:
+    - directories is defined
+    - directories | length > 0
+    - item.run_command_after
+    - item.run_command_after.shell
+  tags:
+    - directories
+    - directories-run-after-commands

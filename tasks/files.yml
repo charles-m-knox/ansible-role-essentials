@@ -18,3 +18,20 @@
     - item.content is defined
   tags:
     - files
+
+- name: Run commmand after file was created  # noqa no-changed-when
+  ansible.builtin.shell:
+    cmd: "{{ item.run_command_after.shell }}"
+    executable: "{{ item.run_command_after.executable | default(omit) }}"
+    chdir: "{{ item.run_command_after.chdir | default(omit) }}"
+  become: "{{ item.run_command_after.become | default(false) }}"
+  loop: "{{ files }}"
+  no_log: "{{ item.no_log | default(omit) }}"
+  when:
+    - files is defined
+    - files | length > 0
+    - item.run_command_after
+    - item.run_command_after.shell
+  tags:
+    - files
+    - files-run-after-commands
