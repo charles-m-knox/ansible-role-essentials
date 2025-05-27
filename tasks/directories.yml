@@ -30,7 +30,7 @@
   when:
     - directories is defined
     - directories | length > 0
-    - item.run_command_after
+    - item.run_command_after is defined
     - item.run_command_after.shell
   tags:
     - directories
