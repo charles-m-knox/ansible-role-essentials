@@ -16,7 +16,7 @@
     - files is defined
     - files | length > 0
     - item.content is defined
-    - ('state' in item and (item.state is not "absent")) or ('state' not in item)
+    - ('state' in item and (item.state != "absent")) or ('state' not in item)
   tags:
     - files
 
