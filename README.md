@@ -42,6 +42,14 @@ directories:
 files:
   - dest: /etc/systemd/system/sshd.service.d/override.conf
     become: true
+    # All supported options are also passed to an ansible.builtin.file task if
+    # state is defined this lets you get creative and even allows directories to
+    # be created, if you prefer this instead of using the separate directories
+    # tasks above. See files.yml for how options are mapped, it's pretty simple.
+    state: absent
+
+  - dest: /etc/systemd/system/sshd.service.d/override.conf
+    become: true
     owner: root
     group: root
     mode: "0644"
