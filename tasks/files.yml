@@ -1,28 +1,9 @@
 # SPDX-License-Identifier: MIT-0
 ---
 
-# see directories.yml for similarly grouped items
-- name: Render file from variable
-  ansible.builtin.template:
-    src: "{{ item.src | default('files/file.j2') }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode | default(omit) }}"
-    owner: "{{ item.owner | default(omit) }}"
-    group: "{{ item.group | default(omit) }}"
-  loop: "{{ files }}"
-  become: "{{ item.become | default(false) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
-  when:
-    - files is defined
-    - files | length > 0
-    - item.content is defined
-    - ('state' in item and (item.state != "absent")) or ('state' not in item)
-  tags:
-    - files
-
 # This task requires that the state be set in order to work. Note that you can
 # technically define directories with this.
-- name: Configure file state
+- name: Configure file
   ansible.builtin.file:
     path: "{{ item.dest }}"
     mode: "{{ item.mode | default(omit) }}"
@@ -50,6 +31,25 @@
     - files is defined
     - files | length > 0
     - ('state' in item)
+  tags:
+    - files
+
+# see directories.yml for similarly grouped items
+- name: Render file
+  ansible.builtin.template:
+    src: "{{ item.src | default('files/file.j2') }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode | default(omit) }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+  loop: "{{ files }}"
+  become: "{{ item.become | default(false) }}"
+  no_log: "{{ item.no_log | default(omit) }}"
+  when:
+    - files is defined
+    - files | length > 0
+    - item.content is defined
+    - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
   tags:
     - files
 
