@@ -3,55 +3,71 @@
 
 # This task requires that the state be set in order to work. Note that you can
 # technically define directories with this.
-- name: Configure file
-  ansible.builtin.file:
-    path: "{{ item.dest }}"
-    mode: "{{ item.mode | default(omit) }}"
-    owner: "{{ item.owner | default(omit) }}"
-    group: "{{ item.group | default(omit) }}"
-    state: "{{ item.state }}"
-    attributes: "{{ item.attributes | default(omit) }}"
-    force: "{{ item.force | default(omit) }}"
-    seuser: "{{ item.seuser | default(omit) }}"
-    serole: "{{ item.serole | default(omit) }}"
-    setype: "{{ item.setype | default(omit) }}"
-    selevel: "{{ item.selevel | default(omit) }}"
-    unsafe_writes: "{{ item.unsafe_writes | default(omit) }}"
-    recurse: "{{ item.recurse | default(omit) }}"
-    follow: "{{ item.follow | default(omit) }}"
-    modification_time: "{{ item.modification_time | default(omit) }}"
-    modification_time_format: "{{ item.modification_time_format | default(omit) }}"
-    access_time: "{{ item.access_time | default(omit) }}"
-    access_time_format: "{{ item.access_time_format | default(omit) }}"
-    src: "{{ item.src_link | default(omit) }}"
+- name: Configure and write files
   loop: "{{ files }}"
-  become: "{{ item.become | default(false) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
   when:
     - files is defined
     - files | length > 0
-    - ('state' in item)
   tags:
     - files
+  block:
+    - name: Configure files
+      ansible.builtin.file:
+        path: "{{ item.dest }}"
+        mode: "{{ item.mode | default(omit) }}"
+        owner: "{{ item.owner | default(omit) }}"
+        group: "{{ item.group | default(omit) }}"
+        state: "{{ item.state }}"
+        attributes: "{{ item.attributes | default(omit) }}"
+        force: "{{ item.force | default(omit) }}"
+        seuser: "{{ item.seuser | default(omit) }}"
+        serole: "{{ item.serole | default(omit) }}"
+        setype: "{{ item.setype | default(omit) }}"
+        selevel: "{{ item.selevel | default(omit) }}"
+        unsafe_writes: "{{ item.unsafe_writes | default(omit) }}"
+        recurse: "{{ item.recurse | default(omit) }}"
+        follow: "{{ item.follow | default(omit) }}"
+        modification_time: "{{ item.modification_time | default(omit) }}"
+        modification_time_format: "{{ item.modification_time_format | default(omit) }}"
+        access_time: "{{ item.access_time | default(omit) }}"
+        access_time_format: "{{ item.access_time_format | default(omit) }}"
+        src: "{{ item.src_link | default(omit) }}"
+      become: "{{ item.become | default(false) }}"
+      no_log: "{{ item.no_log | default(omit) }}"
+      when:
+        - item.content is not defined
+        - ('state' in item)
+    - name: Render files
+      ansible.builtin.template:
+        src: "{{ item.src | default('files/file.j2') }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode | default(omit) }}"
+        owner: "{{ item.owner | default(omit) }}"
+        group: "{{ item.group | default(omit) }}"
+      become: "{{ item.become | default(false) }}"
+      no_log: "{{ item.no_log | default(omit) }}"
+      when:
+        - item.content is defined
+        - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
 
 # see directories.yml for similarly grouped items
-- name: Render file
-  ansible.builtin.template:
-    src: "{{ item.src | default('files/file.j2') }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode | default(omit) }}"
-    owner: "{{ item.owner | default(omit) }}"
-    group: "{{ item.group | default(omit) }}"
-  loop: "{{ files }}"
-  become: "{{ item.become | default(false) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
-  when:
-    - files is defined
-    - files | length > 0
-    - item.content is defined
-    - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
-  tags:
-    - files
+# - name: Render file
+#   ansible.builtin.template:
+#     src: "{{ item.src | default('files/file.j2') }}"
+#     dest: "{{ item.dest }}"
+#     mode: "{{ item.mode | default(omit) }}"
+#     owner: "{{ item.owner | default(omit) }}"
+#     group: "{{ item.group | default(omit) }}"
+#   loop: "{{ files }}"
+#   become: "{{ item.become | default(false) }}"
+#   no_log: "{{ item.no_log | default(omit) }}"
+#   when:
+#     - files is defined
+#     - files | length > 0
+#     - item.content is defined
+#     - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
+#   tags:
+#     - files
 
 - name: Run commmand after file was created  # noqa no-changed-when
   ansible.builtin.shell:
