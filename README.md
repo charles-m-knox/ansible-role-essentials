@@ -46,6 +46,11 @@ files:
     # state is defined this lets you get creative and even allows directories to
     # be created, if you prefer this instead of using the separate directories
     # tasks above. See files.yml for how options are mapped, it's pretty simple.
+    #
+    # The only caveat is that values will not get processed in the order you
+    # expect. All of the items in this "files" list with a defined "state" value
+    # will get processed first, and then the other values will be processed
+    # after.
     state: absent
 
   - dest: /etc/systemd/system/sshd.service.d/override.conf
