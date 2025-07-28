@@ -3,7 +3,7 @@
 
 # This task requires that the state be set in order to work. Note that you can
 # technically define directories with this.
-- name: Configure and write files
+- name: Create directories and/or modify files
   ansible.builtin.file:
     path: "{{ item.dest }}"
     mode: "{{ item.mode | default(omit) }}"
@@ -30,12 +30,14 @@
   when:
     - files is defined
     - files | length > 0
+    - item is defined
+    - item
     - ('state' in item)
   tags:
     - files
 
 # see directories.yml for similarly grouped items
-- name: Render file
+- name: Render files
   ansible.builtin.template:
     src: "{{ item.src | default('files/file.j2') }}"
     dest: "{{ item.dest }}"
@@ -48,6 +50,8 @@
   when:
     - files is defined
     - files | length > 0
+    - item is defined
+    - item
     - item.content is defined
     - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
   tags:
@@ -64,6 +68,7 @@
   when:
     - files
     - files | length > 0
+    - item is defined
     - item
     - "'run_command_after' in item"
     - "'shell' in item.run_command_after"
