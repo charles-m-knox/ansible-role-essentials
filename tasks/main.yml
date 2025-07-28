@@ -7,9 +7,6 @@
 - name: System controls
   ansible.builtin.import_tasks: sysctl.yml
 
-- name: Directories
-  ansible.builtin.import_tasks: directories.yml
-
 - name: Files
   ansible.builtin.import_tasks: files.yml
 

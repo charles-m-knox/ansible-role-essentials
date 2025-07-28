@@ -17,15 +17,16 @@ basis.
 
 ### Files and Directories
 
-Here's an example of how to use the `files`, `directories`, and
-`systemd-services` tasks. These are very simple and allow Ansible to control
-drop-in files and pretty much anything else.
+Here's an example of how to use the `files`, and `systemd-services` tasks. These
+are very simple and allow Ansible to control drop-in files and pretty much
+anything else.
 
 Define these variables in your host(s):
 
 ```yaml
-directories:
-  - dir: /etc/systemd/system/sshd.service.d
+files:
+  - dest: /etc/systemd/system/sshd.service.d
+    state: directory
     become: true
     owner: root
     group: root
@@ -39,7 +40,6 @@ directories:
     #   shell: |
     #     podman unshare chown -R nobody:nobody /path/to/directory
 
-files:
   - dest: /etc/systemd/system/sshd.service.d/override.conf
     become: true
     # All supported options are also passed to an ansible.builtin.file task if
@@ -116,7 +116,7 @@ note that root access is required for some of the steps:
 ```
 
 ```bash
-ansible-playbook site.yml --tags base,sysctl,files,directories,systemd-services --step
+ansible-playbook site.yml --tags base,sysctl,files,systemd-services --step
 ```
 
 ## License

@@ -24,19 +24,17 @@
     access_time: "{{ item.access_time | default(omit) }}"
     access_time_format: "{{ item.access_time_format | default(omit) }}"
     src: "{{ item.src_link | default(omit) }}"
+  become: "{{ item.become | default(false) | bool }}"
+  no_log: "{{ item.no_log | default(false) | bool }}"
   loop: "{{ files }}"
-  become: "{{ item.become | default(false) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
   when:
     - files is defined
     - files | length > 0
     - item is defined
-    - item
     - ('state' in item)
   tags:
     - files
 
-# see directories.yml for similarly grouped items
 - name: Render files
   ansible.builtin.template:
     src: "{{ item.src | default('files/file.j2') }}"
@@ -44,14 +42,13 @@
     mode: "{{ item.mode | default(omit) }}"
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
+  become: "{{ item.become | default(false) | bool }}"
+  no_log: "{{ item.no_log | default(false) | bool }}"
   loop: "{{ files }}"
-  become: "{{ item.become | default(false) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
   when:
     - files is defined
     - files | length > 0
     - item is defined
-    - item
     - item.content is defined
     - ('state' in item and (item.state == "file" or item.state == "present")) or ('state' not in item)
   tags:
@@ -62,14 +59,13 @@
     cmd: "{{ item.run_command_after.shell }}"
     executable: "{{ item.run_command_after.executable | default(omit) }}"
     chdir: "{{ item.run_command_after.chdir | default(omit) }}"
-  become: "{{ item.run_command_after.become | default(false) }}"
+  become: "{{ item.run_command_after.become | default(false) | bool }}"
+  no_log: "{{ item.no_log | default(false) | bool }}"
   loop: "{{ files }}"
-  no_log: "{{ item.no_log | default(omit) }}"
   when:
-    - files
+    - files is defined
     - files | length > 0
     - item is defined
-    - item
     - "'run_command_after' in item"
     - "'shell' in item.run_command_after"
   tags:
