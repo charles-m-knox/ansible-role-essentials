@@ -12,8 +12,8 @@
     daemon_reexec: "{{ item.daemon_reexec | default(omit) }}"
     scope: "{{ item.scope | default(omit) }}"
     no_block: "{{ item.no_block | default(omit) }}"
-  become: "{{ item.become | default(omit) }}"
-  no_log: "{{ item.no_log | default(omit) }}"
+  become: "{{ item.become | default(false) | default(omit) }}"
+  no_log: "{{ item.no_log | default(false) | default(omit) }}"
   loop: "{{ systemd_services }}"
   when:
     - systemd_services
