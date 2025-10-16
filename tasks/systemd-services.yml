@@ -16,7 +16,7 @@
   no_log: "{{ item.no_log | default(false) | default(omit) }}"
   loop: "{{ systemd_services }}"
   when:
-    - systemd_services
+    - systemd_services is defined
     - systemd_services | length > 0
   tags:
     - systemd_services
